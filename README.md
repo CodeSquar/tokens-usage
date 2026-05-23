@@ -1,6 +1,8 @@
 ﻿<p align="center">
-  <img src="./docs/image.png" alt="TokenKit — counts input tokens and estimates cost (USD) for OpenAI, Anthropic, and Google" width="100%" />
+  <img src="./docs/image.png" alt="TokenKit" width="100%" />
 </p>
+
+Count tokens **before sending a request** or **before persisting a provider response** to your database. TokenKit supports OpenAI, Anthropic, and Google so you can track context window usage with accurate counts, plan what fits in the next turn, and avoid unexpected API costs.
 
 Uses the provider's official endpoint when available (`mode: "endpoint"` or `"auto"` with an API key). Otherwise, it uses local strategies (`mode: "local"`).
 

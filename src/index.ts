@@ -25,7 +25,7 @@ export type {
 } from "./types/index.js";
 
 export {
-  TokenKitError,
+  TokensUsageError,
   ProviderNotSupportedError,
   ModelNotSupportedError,
   MissingApiKeyError,

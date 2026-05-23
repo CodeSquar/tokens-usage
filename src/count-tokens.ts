@@ -192,7 +192,7 @@ async function normalizeInput(options: CountTokensOptions): Promise<AnyNormalize
 
 function ensureAiSdkModelAllowed(provider: CountTokensOptions["provider"], model: string): void {
   if (!resolveModelCatalog(provider, model)) {
-    invalid("model", `is not present in TokenKit catalog for provider "${provider}"`);
+    invalid("model", `is not present in tokens-usage catalog for provider "${provider}"`);
   }
   if (!isAISdkModelSupported(provider, model)) {
     invalid("model", `is not supported by AI SDK for provider "${provider}"`);

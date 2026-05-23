@@ -1,5 +1,5 @@
 {
-  "name": "tokenkit",
+  "name": "tokens-usage",
   "version": "0.2.0",
   "description": "Unified token counting and cost estimation for AI providers",
   "type": "module",
@@ -20,7 +20,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE.md"
   ],
   "scripts": {
     "prepublishOnly": "npm run typecheck && npm test && npm run build",
@@ -43,7 +44,7 @@
     "gemini",
     "pricing"
   ],
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE.md",
   "dependencies": {
     "@anthropic-ai/tokenizer": "^0.0.4",
     "tiktoken": "^1.0.22"
@@ -69,9 +70,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CodeSquar/tokenkit.git"
+    "url": "https://github.com/CodeSquar/tokens-usage.git"
   },
   "bugs": {
-    "url": "https://github.com/CodeSquar/tokenkit/issues"
+    "url": "https://github.com/CodeSquar/tokens-usage/issues"
   }
 }

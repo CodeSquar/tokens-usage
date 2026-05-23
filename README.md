@@ -1,29 +1,29 @@
 ﻿<p align="center">
-  <img src="./docs/image.png" alt="TokenKit" width="100%" />
+  <img src="./docs/image.png" alt="tokens-usage" width="100%" />
 </p>
 
-Count tokens **before sending a request** or **before persisting a provider response** to your database. TokenKit supports OpenAI, Anthropic, and Google so you can track context window usage with accurate counts, plan what fits in the next turn, and avoid unexpected API costs.
+Count tokens **before sending a request** or **before persisting a provider response** to your database. tokens-usage supports OpenAI, Anthropic, and Google so you can track context window usage with accurate counts, plan what fits in the next turn, and avoid unexpected API costs.
 
-TokenKit also supports AI SDK message formats (`ModelMessage` / `UIMessage`) as input. AI SDK is not a provider.
+tokens-usage also supports AI SDK message formats (`ModelMessage` / `UIMessage`) as input. AI SDK is not a provider.
 
 Uses the provider's official endpoint when available (`mode: "endpoint"` or `"auto"` with an API key). Otherwise, it uses local strategies (`mode: "local"`).
 
 ## Install
 
 ```bash
-npm install tokenkit
+npm install tokens-usage
 ```
 
 If you pass `uiMessages` with `inputMode: "ai_sdk"`, install AI SDK as well:
 
 ```bash
-npm install tokenkit ai
+npm install tokens-usage ai
 ```
 
 ## Usage
 
 ```ts
-import { countTokens, estimateTokens } from "tokenkit";
+import { countTokens, estimateTokens } from "tokens-usage";
 
 const result = await countTokens({
   provider: "openai",
@@ -51,7 +51,7 @@ console.log(result.price);
 ### AI SDK (`ModelMessage` / `UIMessage`)
 
 ```ts
-import { countTokens, type ModelMessage, type UIMessage } from "tokenkit";
+import { countTokens, type ModelMessage, type UIMessage } from "tokens-usage";
 
 const modelMessages: ModelMessage[] = [
   { role: "system", content: "Be concise." },
@@ -83,7 +83,7 @@ await countTokens({
 
 Notes:
 - `inputMode: "ai_sdk"` uses strict model validation per provider:
-  - model must exist in TokenKit catalog
+  - model must exist in tokens-usage catalog
   - model must be supported by AI SDK for that provider
 - `UIMessage[]` is converted internally with AI SDK `convertToModelMessages` (requires the `ai` peer dependency).
 - v1 counts text + tool parts; non-text media parts are ignored.
@@ -154,13 +154,13 @@ Default: `provider`.
   - OpenAI: `input` (`string | ResponseInput`)
   - Anthropic: `messages`
   - Google: `contents`
-- `text`: expects `input: string` and TokenKit converts it internally to native provider payload.
-- `ai_sdk`: expects `aiSdkMessages: ModelMessage[]` or `uiMessages: UIMessage[]` and TokenKit converts them to native provider payload.
+- `text`: expects `input: string` and tokens-usage converts it internally to native provider payload.
+- `ai_sdk`: expects `aiSdkMessages: ModelMessage[]` or `uiMessages: UIMessage[]` and tokens-usage converts them to native provider payload.
 
 Validation is fail-fast:
 - In `text` mode, `input` is required and must be non-empty.
 - In `provider` mode, `input` is rejected for Anthropic and Google.
-- In `ai_sdk` mode, model support is strict: the model must exist in TokenKit catalog and be supported by AI SDK for that provider.
+- In `ai_sdk` mode, model support is strict: the model must exist in tokens-usage catalog and be supported by AI SDK for that provider.
 - In `ai_sdk` mode (v1), non-text media parts are ignored for counting; text and tool parts are counted.
 
 ## `countAssistantTools`
@@ -225,4 +225,6 @@ npm run try:openai
 - Counts input tokens (prompt/input), not output tokens.
 - `price` is `null` if the model is not in the pricing table.
 
-For more endpoint details: [count-endpoint.md](./count-endpoint.md)
+## License
+
+tokens-usage is source-available under a custom license. See [LICENSE.md](./LICENSE.md) for the full terms.

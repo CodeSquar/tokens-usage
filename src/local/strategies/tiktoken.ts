@@ -60,7 +60,8 @@ export function countTiktoken(input: NormalizedInput): number {
     for (const message of input.messages) {
       tokens += TOKENS_PER_MESSAGE;
       tokens += enc.encode(message.content).length;
-      if ("name" in message && typeof (message as { name?: string }).name === "string") {
+      if (message.name) {
+        tokens += enc.encode(message.name).length;
         tokens += TOKENS_PER_NAME;
       }
     }

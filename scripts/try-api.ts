@@ -4,13 +4,17 @@ import {
   countHeuristic,
   countTokens,
   estimateTokens,
+  type Message,
 } from "../src/index.js";
 
 dotenv.config();
 
 const MODEL = "gpt-5.5";
 const PROMPT = "Tiktoken is a library for counting tokens.";
-const messages = [{ role: "user" as const, content: PROMPT }];
+const messages: Message[] = [
+  { role: "assistant", content: "How can i help you today?" },
+  { role: "user", content: PROMPT },
+];
 
 function log(label: string, data: unknown) {
   console.log(`\n--- ${label} ---`);
@@ -37,7 +41,7 @@ async function main() {
     await countTokens({
       provider: "openai",
       model: MODEL,
-      text: PROMPT,
+      messages,
       mode: "auto",
     }),
   );
@@ -47,7 +51,7 @@ async function main() {
     await countTokens({
       provider: "openai",
       model: MODEL,
-      text: PROMPT,
+      messages,
       mode: "local",
     }),
   );
@@ -57,7 +61,7 @@ async function main() {
     await estimateTokens({
       provider: "openai",
       model: MODEL,
-      text: PROMPT,
+      messages,
     }),
   );
 
@@ -65,7 +69,7 @@ async function main() {
     await countTokens({
       provider: "openai",
       model: MODEL,
-      text: PROMPT,
+      messages,
       mode: "endpoint",
     })
   ).tokens;

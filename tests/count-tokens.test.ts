@@ -1,0 +1,76 @@
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { countTokens } from "../src/count-tokens.js";
+import { estimateTokens } from "../src/estimate-tokens.js";
+import { ValidationError } from "../src/errors/index.js";
+
+describe("countTokens", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("throws when input is missing", async () => {
+    await expect(
+      countTokens({
+        provider: "openai",
+        model: "gpt-4o",
+      }),
+    ).rejects.toThrow(ValidationError);
+  });
+
+  it("auto mode falls back to local on endpoint failure", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 500,
+        statusText: "Error",
+        text: async () => "server error",
+      }),
+    );
+
+    const result = await countTokens({
+      provider: "openai",
+      model: "gpt-4o",
+      text: "Hello",
+      mode: "auto",
+      apiKey: "key",
+    });
+
+    expect(result.estimated).toBe(true);
+    expect(result.method).toBe("local_tiktoken");
+    expect(result.tokens).toBeGreaterThan(0);
+  });
+
+  it("estimateTokens forces local mode", async () => {
+    vi.stubGlobal("fetch", vi.fn());
+
+    const result = await estimateTokens({
+      provider: "google",
+      model: "gemini-2.0-flash",
+      text: "Test",
+      apiKey: "should-not-be-used",
+    });
+
+    expect(result.estimated).toBe(true);
+    expect(result.method).toBe("local_heuristic");
+    expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it("returns price null when model not in pricing table", async () => {
+    const result = await countTokens({
+      provider: "openai",
+      model: "gpt-4o",
+      text: "x",
+      mode: "local",
+    });
+    expect(result.price).not.toBeNull();
+
+    const unknown = await countTokens({
+      provider: "openai",
+      model: "totally-unknown-model-id",
+      text: "x",
+      mode: "local",
+    });
+    expect(unknown.price).toBeNull();
+  });
+});

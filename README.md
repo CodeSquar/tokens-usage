@@ -4,6 +4,8 @@
 
 Count tokens **before sending a request** or **before persisting a provider response** to your database. TokenKit supports OpenAI, Anthropic, and Google so you can track context window usage with accurate counts, plan what fits in the next turn, and avoid unexpected API costs.
 
+TokenKit also supports AI SDK message formats (`ModelMessage` / `UIMessage`) as input. AI SDK is not a provider.
+
 Uses the provider's official endpoint when available (`mode: "endpoint"` or `"auto"` with an API key). Otherwise, it uses local strategies (`mode: "local"`).
 
 ## Install
@@ -73,6 +75,13 @@ await countTokens({
   uiMessages,
 });
 ```
+
+Notes:
+- `inputMode: "ai_sdk"` uses strict model validation per provider:
+  - model must exist in TokenKit catalog
+  - model must be supported by AI SDK for that provider
+- `UIMessage[]` is converted internally with AI SDK `convertToModelMessages`.
+- v1 counts text + tool parts; non-text media parts are ignored.
 
 ## Provider Inputs
 
@@ -174,7 +183,7 @@ Can be passed via `apiKey` or environment variables:
 |----------|---------|
 | OpenAI | `OPENAI_API_KEY` |
 | Anthropic | `ANTHROPIC_API_KEY` |
-| Google | `GEMINI_API_KEY` or `GOOGLE_API_KEY` |
+| Google | `GOOGLE_GENERATIVE_AI_API_KEY` or `GEMINI_API_KEY` or `GOOGLE_API_KEY` |
 
 ## Response Shape
 
@@ -204,7 +213,10 @@ npm test
 npm run test:integration
 npm run try:all
 npm run try:openai
+npm run try:google
 ```
+
+`npm run try:google` runs an AI SDK matrix over all `google:*` models in `src/models/catalog.json` and prints which models succeed/fail in `local` and `endpoint` mode.
 
 ## Notes
 

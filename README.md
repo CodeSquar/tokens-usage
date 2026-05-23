@@ -95,6 +95,16 @@ npm run test:integration
 
 Unit tests stay mocked: `npm test`
 
+## Quick try (OpenAI)
+
+Smoke script against `gpt-5.5` (endpoint, auto, local, pricing, heuristic):
+
+```bash
+cp .env.example .env
+# add OPENAI_API_KEY, then:
+npm run try:openai
+```
+
 ## Limits (MVP)
 
 - Input/prompt tokens only, no output counting

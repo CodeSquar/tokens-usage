@@ -56,6 +56,23 @@ describe("countTokens", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
 
+  it("estimateTokens ignores endpoint mode at runtime", async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+
+    const result = await estimateTokens({
+      provider: "openai",
+      model: "gpt-4o",
+      text: "Hello",
+      apiKey: "should-not-be-used",
+      mode: "endpoint",
+    } as Parameters<typeof estimateTokens>[0]);
+
+    expect(result.estimated).toBe(true);
+    expect(result.method).toBe("local_tiktoken");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("returns price null when model not in pricing table", async () => {
     const result = await countTokens({
       provider: "openai",

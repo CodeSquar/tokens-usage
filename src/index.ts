@@ -11,6 +11,7 @@ export type {
   Message,
   MessageRole,
   CountTokensOptions,
+  EstimateTokensOptions,
   CountTokensResult,
   PriceEstimate,
   CalculatePriceOptions,

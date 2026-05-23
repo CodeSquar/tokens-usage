@@ -30,6 +30,8 @@ export interface CountTokensOptions {
   system?: string;
 }
 
+export type EstimateTokensOptions = Omit<CountTokensOptions, "mode">;
+
 export interface PriceEstimate {
   usd: number;
 }

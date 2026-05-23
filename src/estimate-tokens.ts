@@ -1,12 +1,11 @@
 import { countTokens } from "./count-tokens.js";
-import type { CountTokensOptions, CountTokensResult } from "./types/index.js";
+import type { CountTokensResult, EstimateTokensOptions } from "./types/index.js";
 
 export async function estimateTokens(
-  options: CountTokensOptions,
+  options: EstimateTokensOptions,
 ): Promise<CountTokensResult> {
-  const mode = options.mode ?? "local";
   return countTokens({
     ...options,
-    mode: mode === "endpoint" ? mode : "local",
+    mode: "local",
   });
 }

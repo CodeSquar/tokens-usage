@@ -1,6 +1,6 @@
-﻿# TokenKit
-
-Counts input tokens and estimates cost (USD) for OpenAI, Anthropic, and Google.
+﻿<p align="center">
+  <img src="./docs/image.png" alt="TokenKit — counts input tokens and estimates cost (USD) for OpenAI, Anthropic, and Google" width="100%" />
+</p>
 
 Uses the provider's official endpoint when available (`mode: "endpoint"` or `"auto"` with an API key). Otherwise, it uses local strategies (`mode: "local"`).
 

@@ -7,14 +7,22 @@ import type {
   NormalizedInput,
 } from "./types/index.js";
 import { resolveApiKey } from "./utils/env.js";
-import { resolveMessages } from "./utils/messages.js";
+import {
+  partitionSystemMessages,
+  resolveMessages,
+} from "./utils/messages.js";
 
 function normalizeInput(options: CountTokensOptions): NormalizedInput {
+  const { system, messages } = partitionSystemMessages(
+    resolveMessages(options.messages, options.text),
+    options.system,
+  );
+
   return {
     provider: options.provider,
     model: options.model,
-    messages: resolveMessages(options.messages, options.text),
-    system: options.system,
+    messages,
+    system,
     apiKey: resolveApiKey(options.provider, options.apiKey),
   };
 }

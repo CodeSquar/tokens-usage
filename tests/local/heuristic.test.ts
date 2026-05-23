@@ -30,6 +30,20 @@ describe("countHeuristic", () => {
     expect(withSystem).toBeGreaterThan(without);
   });
 
+  it("hoists system messages into the system prompt", () => {
+    const inlineSystem = countHeuristic({
+      messages: [
+        { role: "system", content: "You are helpful." },
+        { role: "user", content: "Hi" },
+      ],
+    });
+    const topLevelSystem = countHeuristic({
+      messages: [{ role: "user", content: "Hi" }],
+      system: "You are helpful.",
+    });
+    expect(inlineSystem).toBe(topLevelSystem);
+  });
+
   it("scales with longer input", () => {
     const short = countHeuristic({ text: "a" });
     const long = countHeuristic({ text: "a".repeat(400) });

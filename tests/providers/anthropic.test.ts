@@ -72,4 +72,28 @@ describe("anthropic adapter", () => {
       }),
     ).rejects.toThrow(RateLimitError);
   });
+
+  it("hoists system messages to top-level system field", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ input_tokens: 14 }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await countTokens({
+      provider: "anthropic",
+      model: "claude-sonnet-4-20250514",
+      messages: [
+        { role: "system", content: "Be helpful." },
+        { role: "user", content: "Hello" },
+      ],
+      mode: "endpoint",
+      apiKey: "test-key",
+    });
+
+    const body = JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body));
+    expect(body.system).toBe("Be helpful.");
+    expect(body.messages).toEqual([{ role: "user", content: "Hello" }]);
+  });
 });

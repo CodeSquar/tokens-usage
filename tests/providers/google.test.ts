@@ -38,4 +38,32 @@ describe("google adapter", () => {
     expect(result.tokens).toBe(10);
     expect(result.method).toBe("provider_endpoint");
   });
+
+  it("hoists system messages to systemInstruction", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      json: async () => ({ totalTokens: 10 }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await countTokens({
+      provider: "google",
+      model: "gemini-2.0-flash",
+      messages: [
+        { role: "system", content: "Be helpful." },
+        { role: "user", content: "Hello" },
+      ],
+      mode: "endpoint",
+      apiKey: "gemini-key",
+    });
+
+    const body = JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body));
+    expect(body.systemInstruction).toEqual({
+      parts: [{ text: "Be helpful." }],
+    });
+    expect(body.contents).toEqual([
+      { role: "user", parts: [{ text: "Hello" }] },
+    ]);
+  });
 });

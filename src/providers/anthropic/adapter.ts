@@ -9,7 +9,7 @@ interface AnthropicCountTokensResponse {
 
 function toAnthropicMessages(messages: Message[]) {
   return messages.map((message) => ({
-    role: message.role === "system" ? "user" : message.role,
+    role: message.role,
     content: message.content,
   }));
 }

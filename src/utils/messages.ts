@@ -20,6 +20,36 @@ export function resolveMessages(
   );
 }
 
+export function partitionSystemMessages(
+  messages: Message[],
+  system?: string,
+): { system?: string; messages: Message[] } {
+  const systemParts: string[] = [];
+  if (system) {
+    systemParts.push(system);
+  }
+
+  const conversationMessages: Message[] = [];
+  for (const message of messages) {
+    if (message.role === "system") {
+      systemParts.push(message.content);
+    } else {
+      conversationMessages.push(message);
+    }
+  }
+
+  if (conversationMessages.length === 0) {
+    throw new ValidationError(
+      "At least one non-system message must be provided.",
+    );
+  }
+
+  return {
+    system: systemParts.length > 0 ? systemParts.join("\n") : undefined,
+    messages: conversationMessages,
+  };
+}
+
 export function flattenMessages(messages: Message[], system?: string): string {
   const parts: string[] = [];
   if (system) {

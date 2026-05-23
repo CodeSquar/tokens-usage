@@ -82,6 +82,24 @@ The heuristic counter is provider-agnostic and exported as `countHeuristic()` fo
 - `calculatePrice({ provider, model, tokens })` — prompt cost only
 - `countHeuristic({ messages?, text?, system? })` — standalone heuristic count
 
+## Integration tests (real APIs)
+
+Uses official count endpoints with frontier models:
+
+| Provider | Model ID |
+|----------|----------|
+| OpenAI | `gpt-5.5` |
+| Anthropic | `claude-opus-4-7` |
+| Google | `gemini-3-flash-preview` |
+
+```bash
+cp .env.example .env
+# add your API keys, then:
+npm run test:integration
+```
+
+Tests skip automatically when a provider's API key is missing. Unit tests (`npm test`) stay mocked and do not call the network.
+
 ## Limitations (MVP)
 
 - Input/prompt tokens only — no output token counting

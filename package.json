@@ -25,6 +25,7 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
@@ -46,6 +47,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.21",
+    "dotenv": "^17.4.2",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3",
     "vitest": "^3.2.1"
